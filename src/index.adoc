@@ -698,7 +698,7 @@ you would end up with `0x7e 0x01 0x61 0x00 0x00 0x01 0x02 0x03 0x62 0x6f 0x6f`.
 
 The value metadata column (denoted by column type 6) is always paired with a
 <<Value Column,value column>> with the same ID. The metadata column is a <<Run Length Encoding, run length encoded>>
-list of 64-bit <<LEB>>s that defines the type and length of each value in the
+list of 64-bit <<uLEB>>s that defines the type and length of each value in the
 value column.
 
 These integers are laid out like so:
