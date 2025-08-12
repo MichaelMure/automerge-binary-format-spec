@@ -551,9 +551,9 @@ The currently defined columns for operations are:
 | action | 66 | 4 | <<uLEB Column>> | The <<Action>> of each operation
 | value metadata | 86 | 5 | <<Value Metadata Column>> | The metadata for the value of this operation
 | value | 87 | 5 | <<Value Column>> | The value of this operation
-| predecessor group | 112 | 6 |<<Group Column>> | The group for the predecessors of this operation (only in <<change-chunks,change chunks>>)
-| predecessor actor IDs |113 | 6 | Grouped <<Actor Column>> | The actor ID of each predecessor's operation ID
-| predecessor counters |115 | 6 | Grouped <<Delta Column>> | The counter of each predecessor's operation ID
+| predecessor group | 112 | 7 |<<Group Column>> | The group for the predecessors of this operation (only in <<change-chunks,change chunks>>)
+| predecessor actor IDs |113 | 7 | Grouped <<Actor Column>> | The actor ID of each predecessor's operation ID
+| predecessor counters |115 | 7 | Grouped <<Delta Column>> | The counter of each predecessor's operation ID
 | successor group | 128 | 8 | <<Group Column>> | The group for the successors of this operation (only in <<Document Chunk,document chunks>>)
 | successor actor IDs | 129 | 8 | Grouped <<Actor Column>> | The actor ID of each successor's operation ID
 | successor counters | 131 | 8 | Grouped <<Delta Column>> | The counter of each successor's operation ID
