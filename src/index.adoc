@@ -542,7 +542,7 @@ The currently defined columns for operations are:
 | object actor ID | 1 | 0 | <<Actor Column>> | actor index of object ID each operation targets
 | object counter | 2 | 0 | <<uLEB Column>> | counter of the object ID each operation targets
 | key actor ID | 17 | 1 |<<Actor Column>> | actor of the operation ID of the key of each operation
-| key counter | 19 | 1 | <<uLEB Column>> | counter of the operation ID of the key of each
+| key counter | 19 | 1 | <<Delta Column>> | counter of the operation ID of the key of each
   operation
 | key string | 21 | 1 | <<String Column>> | The string key each operation targets
 | actor ID | 33 | 2 | <<Actor Column>> | The actor of each operations ID
