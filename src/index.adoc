@@ -495,7 +495,7 @@ The currently defined columns for changes in a <<Document Chunk,document chunk>>
 | sequence number | 3 | 0 | <<Delta Column>> | The sequence number for each change
 | maxOp | 19 | 1 | <<Delta Column>> | The largest counter that occurs in each change
 | time | 35 | 2 |<<Delta Column>> | The (optional) wallclock time at which each change was made
-| message | 53 | 2 | <<String Column>> | The (optional) commit message for each change
+| message | 53 | 3 | <<String Column>> | The (optional) commit message for each change
 | dependencies group | 64 | 4 | <<Group Column>> | The number of dependencies for each change
 | dependencies index | 67 | 4 | Grouped <<Delta Column>> | The indices of the changes this change depends on
 | extra metadata | 86 | 5 |<<Value Metadata Column>> | The metadata for any extra data for this change
