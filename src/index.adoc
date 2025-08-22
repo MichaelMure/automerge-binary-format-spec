@@ -723,7 +723,7 @@ The type code may be
 | 2 | True | Not present (length = 0)
 | 3 | Unsigned integer | 64-bit <<uLEB>> in value column (length = 1..10)
 | 4 | Signed integer | 64-bit <<LEB>> in value column (length = 1..10)
-| 5 | IEEE754 float | 64-bit IEEE754 float in value column (length = 8) 
+| 5 | IEEE754 float | 64-bit little-endian IEEE754 float in value column (length = 8)
 | 6 | UTF8 string | Utf-8 string in value column (length = 0..2^60)
 | 7 | Bytes | Arbitrary bytes in value column (length = 0..2^60)
 | 8 | Counter | 64-bit <<LEB>> in value column (length = 1..10)
