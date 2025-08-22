@@ -69,7 +69,7 @@ A change is identified by its <<Change Hash,change hash>> which is the
 
 === Actor
 
-An actor makes applies a linear sequence of <<Operation,operations>> to a <<Document,document>>
+An actor applies a linear sequence of <<Operation,operations>> to a <<Document,document>>
 and commits them in a sequence of <<Change,changes>>. Each actor has an actor ID that
 uniquely identifies it. An actor ID is an arbitrary sequence of bytes, which
 should be generated in a way that will not collide with other actors (the reference
