@@ -557,8 +557,8 @@ The currently defined columns for operations are:
 | successor group | 128 | 8 | <<Group Column>> | The group for the successors of this operation (only in <<Document Chunk,document chunks>>)
 | successor actor IDs | 129 | 8 | Grouped <<Actor Column>> | The actor ID of each successor's operation ID
 | successor counters | 131 | 8 | Grouped <<Delta Column>> | The counter of each successor's operation ID
-| rich-text: expand control | 148 | 9 | <<Boolean Column>> | How the mark expands on the text
-| rich-text: mark | 165 | 10 | <<String Column>> | The name of the formatting mark
+| mark expand | 148 | 9 | <<Boolean Column>> | How the mark expands on the text
+| mark name | 165 | 10 | <<String Column>> | The name of the formatting mark
 |===
 
 WARNING: The javascript implementation includes a `child` column, is this
