@@ -536,39 +536,54 @@ following fields:
 
 The currently defined columns for operations are:
 
+[cols="2,1,1,2,1,1,4"]
 |===
-| Field | Specification | ID | Type | Description
- 
-| object actor ID | 1 | 0 | <<Actor Column>> | actor index of object ID each operation targets
-| object counter | 2 | 0 | <<uLEB Column>> | counter of the object ID each operation targets
-| key actor ID | 17 | 1 |<<Actor Column>> | actor of the operation ID of the key of each operation
-| key counter | 19 | 1 | <<Delta Column>> | counter of the operation ID of the key of each
-  operation
-| key string | 21 | 1 | <<String Column>> | The string key each operation targets
-| actor ID | 33 | 2 | <<Actor Column>> | The actor of each operations ID
-| counter | 35 | 2 | <<Delta Column>> | The counter of each operations ID
-| insert | 52 | 3 | <<Boolean Column>> | Whether or not this is an insert operation
-| action | 66 | 4 | <<uLEB Column>> | The <<Action>> of each operation
-| value metadata | 86 | 5 | <<Value Metadata Column>> | The metadata for the value of this operation
-| value | 87 | 5 | <<Value Column>> | The value of this operation
-| predecessor group | 112 | 7 |<<Group Column>> | The group for the predecessors of this operation (only in <<change-chunks,change chunks>>)
-| predecessor actor IDs |113 | 7 | Grouped <<Actor Column>> | The actor ID of each predecessor's operation ID
-| predecessor counters |115 | 7 | Grouped <<Delta Column>> | The counter of each predecessor's operation ID
-| successor group | 128 | 8 | <<Group Column>> | The group for the successors of this operation (only in <<Document Chunk,document chunks>>)
-| successor actor IDs | 129 | 8 | Grouped <<Actor Column>> | The actor ID of each successor's operation ID
-| successor counters | 131 | 8 | Grouped <<Delta Column>> | The counter of each successor's operation ID
-| mark expand | 148 | 9 | <<Boolean Column>> | How the mark expands on the text
-| mark name | 165 | 10 | <<String Column>> | The name of the formatting mark
+| Field | Spec value | ID | Type | In a document chunk | In a change chunk | Description
+
+| object actor ID | 1 | 0 | <<Actor Column>> | yes | yes | actor index of object ID each operation targets
+| object counter | 2 | 0 | <<uLEB Column>> | yes | yes | counter of the object ID each operation targets
+| key actor ID | 17 | 1 | <<Actor Column>> | yes | yes | actor of the operation ID of the key of each operation
+| key counter | 19 | 1 | <<Delta Column>> | yes | yes | counter of the operation ID of the key of each operation
+| key string | 21 | 1 | <<String Column>> | yes | yes | The string key each operation targets
+| actor ID | 33 | 2 | <<Actor Column>> | yes | no | The actor of each operations ID
+| counter | 35 | 2 | <<Delta Column>> | yes | no | The counter of each operations ID
+| insert | 52 | 3 | <<Boolean Column>> | yes | yes | Whether or not this is an insert operation
+| action | 66 | 4 | <<uLEB Column>> | yes | yes | The <<Action>> of each operation
+| value metadata | 86 | 5 | <<Value Metadata Column>> | yes | yes | The metadata for the value of this operation
+| value | 87 | 5 | <<Value Column>> | yes | yes | The value of this operation
+| predecessor group | 112 | 7 | <<Group Column>> | no | yes | The group for the predecessors of this operation (only in <<change-chunks,change chunks>>)
+| predecessor actor IDs | 113 | 7 | Grouped <<Actor Column>> | no | yes | The actor ID of each predecessor's operation ID
+| predecessor counters | 115 | 7 | Grouped <<Delta Column>> | no | yes | The counter of each predecessor's operation ID
+| successor group | 128 | 8 | <<Group Column>> | yes | no | The group for the successors of this operation (only in <<Document Chunk,document chunks>>)
+| successor actor IDs | 129 | 8 | Grouped <<Actor Column>> | yes | no | The actor ID of each successor's operation ID
+| successor counters | 131 | 8 | Grouped <<Delta Column>> | yes | no | The counter of each successor's operation ID
+| mark expand | 148 | 9 | <<Boolean Column>> | yes | yes | How the mark expands on the text
+| mark name | 165 | 10 | <<String Column>> | yes | yes | The name of the formatting mark
 |===
 
 WARNING: The javascript implementation includes a `child` column, is this
 required?
 
-We determine the key that the operation refers to thusly:
+Here is how those fields are to be interpreted:
 
-* If the key string is not null then this is the key of the operation (when modifying a <<Object,map>>).
-* Otherwise we use the pair (lookup_actor(key actor ID), key counter) as the key of the operation (when modifying a <<Object,list>>).
-* If key string is null and any of key actor or key counter are null implementations MUST abort
+* Object:
+  - If both object actor ID and object counter are null, object is the root object (actor ID=0, counter=0)
+  - If both object actor ID and object counter are not null, use those values to construct object
+  - Other cases are invalid and implementation MUST abort
+* Key:
+  - If the key string is not null then this is the key of the operation (when modifying a <<Object,map>>).
+  - Otherwise, we use the pair (lookup_actor(key actor ID), key counter) as the key of the operation (when modifying a <<Object,list>>).
+// below would deserve a better explanation
+  - If key actor ID is null and key counter equals 0, key is the pair (lookup_actor(0), key counter)
+  - If key string is null and key counter is null, implementations MUST abort
+* ID:
+  - If both actor ID and counter are not null, ID is the pair (lookup_actor(actor ID), counter)
+  - If either actor ID or counter are null, implementations MUST abort
+* Insert:
+  - The non-nullable value is used directly
+* Action:
+  - If a null value is read, implementations MUST abort, otherwise use that value.
+
 
 Operations are stored with their predecessors in <<change-chunks,change chunks>> and with successors
 in <<Document Chunk, document chunks>>. For more information see the section
@@ -586,7 +601,10 @@ following fields:
 | Insert | boolean | For operations on `list` or `text` objects, whether to overwrite the position (when `false`) or insert before the position (when `true`)
 | <<Action>> | action | The action this operation takes
 | <<Value>> | primitive value | The value inserted by this operation (if needed)
-| Successors | Operations | Future operations that affect the object created by this operation (if any)
+// TODO: below
+| Predecessors | Operation IDs | Past operations that ??? (if any)
+| Successors | Operation IDs | Future operations that affect the object created by this operation (if any)
+// TODO: rich text columns
 |===
 
 === Column Types
